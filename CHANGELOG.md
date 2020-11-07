@@ -1,3 +1,7 @@
-## 0.0.1
+# Change log
 
-* TODO: Describe initial release.
+## [0.1.0] - 2020-11-07
+
+### Added
+
+- Persist and retrieve strings, booleans and ints in Android
