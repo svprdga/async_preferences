@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
-
-import 'package:flutter/services.dart';
 import 'package:async_preferences/async_preferences.dart';
 
 void main() {
   runApp(MyApp());
+}
+
+class ValuesWrapper {
+  final String stringValue;
+  final int intValue;
+  final bool boolValue;
+
+  ValuesWrapper(this.stringValue, this.intValue, this.boolValue);
 }
 
 class MyApp extends StatefulWidget {
@@ -14,32 +19,24 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
+  // ****************************** CONSTANTS ****************************** //
+
+  static const STRING_REF = 'string_value';
+  static const INT_REF = 'int_value';
+  static const BOOL_REF = 'bool_value';
+
+  // ********************************* VARS ******************************** //
+
+  AsyncPreferences _preferences;
+  Future<ValuesWrapper> _future;
+
+  // ****************************** LIFECYCLE ****************************** //
 
   @override
   void initState() {
     super.initState();
-    initPlatformState();
-  }
-
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-    String platformVersion;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    try {
-      platformVersion = await AsyncPreferences.platformVersion;
-    } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      _platformVersion = platformVersion;
-    });
+    _preferences = AsyncPreferences.getInstance();
+    _future = _getStoredValues();
   }
 
   @override
@@ -47,12 +44,69 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Plugin example app'),
+          title: const Text('AsyncPreferences test app'),
         ),
-        body: Center(
-          child: Text('Running on: $_platformVersion\n'),
+        body: FutureBuilder<ValuesWrapper>(
+          future: _future,
+          builder:
+              (BuildContext context, AsyncSnapshot<ValuesWrapper> snapshot) {
+            if (snapshot.hasError) {
+              return Center(
+                child: Text('Error'),
+              );
+            } else if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            } else {
+              return ListView(
+                children: [
+                  _getRow(
+                      'String value:',
+                      snapshot.data.stringValue != null
+                          ? snapshot.data.stringValue
+                          : 'Value is null'),
+                  _getRow(
+                      'int value:',
+                      snapshot.data.intValue != null
+                          ? snapshot.data.intValue.toString()
+                          : 'Value is null'),
+                  _getRow(
+                      'bool value:',
+                      snapshot.data.boolValue != null
+                          ? snapshot.data.boolValue.toString()
+                          : 'Value is null')
+                ],
+              );
+            }
+          },
         ),
       ),
+    );
+  }
+
+  // *************************** PRIVATE METHODS *************************** //
+
+  Future<ValuesWrapper> _getStoredValues() async {
+    try {
+      String stringValue = await _preferences.getString(STRING_REF);
+      int intValue = await _preferences.getInt(INT_REF);
+      bool boolValue = await _preferences.getBool(BOOL_REF);
+
+      return ValuesWrapper(stringValue, intValue, boolValue);
+    } on Exception catch (e) {
+      print(e);
+      throw e;
+    }
+  }
+
+  Widget _getRow(String label, String value) {
+    return Row(
+      children: [
+        Text(label),
+        Padding(
+          padding: EdgeInsets.only(left: 20),
+          child: Text(value),
+        )
+      ],
     );
   }
 }
