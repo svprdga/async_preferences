@@ -9,6 +9,16 @@ public class SwiftAsyncPreferencesPlugin: NSObject, FlutterPlugin {
   }
 
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-    result("iOS " + UIDevice.current.systemVersion)
+
+    switch call.method {
+        case "get_string":
+            result("hola")
+        case "get_int":
+            result(23)
+        case "get_bool":
+            result(true)
+        default:
+            result(FlutterMethodNotImplemented)
+    }
   }
 }
