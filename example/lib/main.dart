@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:async_preferences/async_preferences.dart';
 
@@ -6,9 +8,9 @@ void main() {
 }
 
 class ValuesWrapper {
-  final String stringValue;
-  final int intValue;
-  final bool boolValue;
+  final String? stringValue;
+  final int? intValue;
+  final bool? boolValue;
 
   ValuesWrapper(this.stringValue, this.intValue, this.boolValue);
 }
@@ -27,16 +29,14 @@ class _MyAppState extends State<MyApp> {
 
   // ********************************* VARS ******************************** //
 
-  AsyncPreferences _preferences;
-  Future<ValuesWrapper> _future;
+  late AsyncPreferences _preferences;
 
   // ****************************** LIFECYCLE ****************************** //
 
   @override
   void initState() {
     super.initState();
-    _preferences = AsyncPreferences.getInstance();
-    _future = _getStoredValues();
+    _preferences = AsyncPreferences();
   }
 
   @override
@@ -47,7 +47,7 @@ class _MyAppState extends State<MyApp> {
           title: const Text('AsyncPreferences test app'),
         ),
         body: FutureBuilder<ValuesWrapper>(
-          future: _future,
+          future: _getStoredValues(),
           builder:
               (BuildContext context, AsyncSnapshot<ValuesWrapper> snapshot) {
             if (snapshot.hasError) {
@@ -61,19 +61,38 @@ class _MyAppState extends State<MyApp> {
                 children: [
                   _getRow(
                       'String value:',
-                      snapshot.data.stringValue != null
-                          ? snapshot.data.stringValue
+                      snapshot.data!.stringValue != null
+                          ? snapshot.data!.stringValue!
                           : 'Value is null'),
                   _getRow(
                       'int value:',
-                      snapshot.data.intValue != null
-                          ? snapshot.data.intValue.toString()
+                      snapshot.data!.intValue != null
+                          ? snapshot.data!.intValue.toString()
                           : 'Value is null'),
                   _getRow(
                       'bool value:',
-                      snapshot.data.boolValue != null
-                          ? snapshot.data.boolValue.toString()
-                          : 'Value is null')
+                      snapshot.data!.boolValue != null
+                          ? snapshot.data!.boolValue.toString()
+                          : 'Value is null'),
+                  Container(
+                    padding: EdgeInsets.all(16.0),
+                    child: Center(
+                      child: ElevatedButton(
+                          child: Text('Save random values'),
+                          onPressed: () async {
+                            final now = DateTime.now();
+                            final random = Random();
+
+                            await _preferences.setString(
+                                STRING_REF, now.toIso8601String());
+                            await _preferences.setInt(
+                                INT_REF, random.nextInt(100));
+                            await _preferences.setBool(
+                                BOOL_REF, random.nextInt(100) % 2 == 0);
+                            setState(() {});
+                          }),
+                    ),
+                  ),
                 ],
               );
             }
@@ -87,9 +106,9 @@ class _MyAppState extends State<MyApp> {
 
   Future<ValuesWrapper> _getStoredValues() async {
     try {
-      String stringValue = await _preferences.getString(STRING_REF);
-      int intValue = await _preferences.getInt(INT_REF);
-      bool boolValue = await _preferences.getBool(BOOL_REF);
+      String? stringValue = await _preferences.getString(STRING_REF);
+      int? intValue = await _preferences.getInt(INT_REF);
+      bool? boolValue = await _preferences.getBool(BOOL_REF);
 
       return ValuesWrapper(stringValue, intValue, boolValue);
     } on Exception catch (e) {
