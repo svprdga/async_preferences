@@ -1,47 +1,54 @@
-
 import 'dart:async';
 
 import 'package:flutter/services.dart';
 
 class AsyncPreferences {
-
   // ********************************* VARS ******************************** //
 
   static const MethodChannel _channel =
-  const MethodChannel('async_preferences');
-
-  static AsyncPreferences _instance;
+      const MethodChannel('async_preferences');
 
   //***************************** PUBLIC METHODS *************************** //
 
-  static AsyncPreferences getInstance() {
-    if (_instance == null) {
-      _instance = AsyncPreferences();
-    }
-    return _instance;
-  }
-
-  Future<bool> setString(String id, String value) async {
+  /// Save a [String] value with the specified [id].
+  ///
+  /// Returns true if the value was successfully saved, returns false otherwise.
+  Future<bool?> setString(String id, String value) async {
     return await _channel.invokeMethod('set_string', [id, value]);
   }
 
-  Future<String> getString(String id) async {
+  /// Retrieve a [String] value by the given [id].
+  ///
+  /// The return value will be null if the given [id] was never used.
+  Future<String?> getString(String id) async {
     return await _channel.invokeMethod('get_string', [id]);
   }
 
-  Future<bool> setBool(String id, bool value) async {
+  /// Save a [bool] value with the specified [id].
+  ///
+  /// Returns true if the value was successfully saved, returns false otherwise.
+  Future<bool?> setBool(String id, bool value) async {
     return await _channel.invokeMethod('set_bool', [id, value]);
   }
 
-  Future<bool> getBool(String id) async {
+  /// Retrieve a [bool] value by the given [id].
+  ///
+  /// The return value will be null if the given [id] was never used.
+  Future<bool?> getBool(String id) async {
     return await _channel.invokeMethod('get_bool', [id]);
   }
 
-  Future<bool> setInt(String id, int value) async {
+  /// Save an [int] value with the specified [id].
+  ///
+  /// Returns true if the value was successfully saved, returns false otherwise.
+  Future<bool?> setInt(String id, int value) async {
     return await _channel.invokeMethod('set_int', [id, value]);
   }
 
-  Future<int> getInt(String id) async {
+  /// Retrieve an [int] value by the given [id].
+  ///
+  /// The return value will be null if the given [id] was never used.
+  Future<int?> getInt(String id) async {
     return await _channel.invokeMethod('get_int', [id]);
   }
 }
