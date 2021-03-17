@@ -1,5 +1,11 @@
 # Change log
 
+## [0.3.0] - 2021-03-17
+
+### Changed
+
+- Migrate to null safety
+
 ## [0.2.0] - 2021-01-12
 
 ### Added
