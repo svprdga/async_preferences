@@ -1,6 +1,5 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:async_preferences/async_preferences.dart';
 
 void main() {
   const MethodChannel channel = MethodChannel('async_preferences');
@@ -15,9 +14,5 @@ void main() {
 
   tearDown(() {
     channel.setMockMethodCallHandler(null);
-  });
-
-  test('getPlatformVersion', () async {
-    expect(await AsyncPreferences.platformVersion, '42');
   });
 }
