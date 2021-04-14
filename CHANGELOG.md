@@ -1,5 +1,11 @@
 # Change log
 
+## [0.4.0] - 2021-04-14
+
+### Added
+
+- Option to remove a preference
+
 ## [0.3.0] - 2021-03-17
 
 ### Changed
