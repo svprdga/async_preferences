@@ -17,6 +17,9 @@ public class SwiftAsyncPreferencesPlugin: NSObject, FlutterPlugin {
     
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         switch(call.method) {
+        case "remove":
+            remove(call: call, result: result)
+            break;
         case "set_string":
             setString(call: call, result: result)
             break;
@@ -41,6 +44,12 @@ public class SwiftAsyncPreferencesPlugin: NSObject, FlutterPlugin {
     }
     
     // Private methods
+    
+    private func remove(call: FlutterMethodCall, result: FlutterResult) {
+        let list = call.arguments as! [String]
+        defaults.removeObject(forKey: list[0])
+        result(nil)
+    }
     
     private func setString(call: FlutterMethodCall, result: FlutterResult) {
         let list = call.arguments as! [String]

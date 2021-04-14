@@ -13,6 +13,11 @@ class Preferences(context: Context) {
     private val editor: SharedPreferences.Editor = sharedPreferences.edit()
     
     // ************************************* PUBLIC METHODS ************************************ //
+
+    fun remove(id: String): Boolean {
+        editor.remove(id)
+        return editor.commit()
+    }
     
     fun setString(id: String, value: String): Boolean {
         editor.putString(id, value)

@@ -10,6 +10,10 @@ class AsyncPreferences {
 
   //***************************** PUBLIC METHODS *************************** //
 
+  Future<bool?> remove(String id) async {
+    return await _channel.invokeMethod('remove', [id]);
+  }
+
   /// Save a [String] value with the specified [id].
   ///
   /// Returns true if the value was successfully saved, returns false otherwise.

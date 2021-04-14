@@ -28,6 +28,7 @@ class AsyncPreferencesPlugin : FlutterPlugin, MethodCallHandler {
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: MethodChannel.Result) {
         when (call.method) {
+            "remove" -> remove(call, result)
             "set_string" -> setString(call, result)
             "get_string" -> getString(call, result)
             "set_bool" -> setBoolean(call, result)
@@ -44,6 +45,15 @@ class AsyncPreferencesPlugin : FlutterPlugin, MethodCallHandler {
 
     // ************************************ PRIVATE METHODS ************************************ //
 
+    private fun remove(call: MethodCall, result: MethodChannel.Result) {
+        try {
+            val list = call.arguments as ArrayList<String>
+            result.success(preferences.remove(list[0]))
+        } catch (e: Exception) {
+            result.error("remove_error", e.message, null)
+        }
+    }
+    
     private fun setString(call: MethodCall, result: MethodChannel.Result) {
         try {
             val list = call.arguments as ArrayList<String>
