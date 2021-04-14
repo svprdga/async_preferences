@@ -93,6 +93,19 @@ class _MyAppState extends State<MyApp> {
                           }),
                     ),
                   ),
+                  Container(
+                    padding: EdgeInsets.all(16.0),
+                    child: Center(
+                      child: ElevatedButton(
+                          child: Text('Remove all values'),
+                          onPressed: () async {
+                            await _preferences.remove(STRING_REF);
+                            await _preferences.remove(INT_REF);
+                            await _preferences.remove(BOOL_REF);
+                            setState(() {});
+                          }),
+                    ),
+                  ),
                 ],
               );
             }
