@@ -15,6 +15,14 @@ class ValuesWrapper {
   ValuesWrapper(this.stringValue, this.intValue, this.boolValue);
 }
 
+class PreferencesResult {
+  final ValuesWrapper defaultPreferencesValues;
+  final ValuesWrapper customPreferencesValues;
+
+  PreferencesResult(
+      this.defaultPreferencesValues, this.customPreferencesValues);
+}
+
 class MyApp extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
@@ -26,6 +34,8 @@ class _MyAppState extends State<MyApp> {
   static const STRING_REF = 'string_value';
   static const INT_REF = 'int_value';
   static const BOOL_REF = 'bool_value';
+
+  static const CUSTOM_FILE = 'custom';
 
   // ********************************* VARS ******************************** //
 
@@ -46,10 +56,10 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('AsyncPreferences test app'),
         ),
-        body: FutureBuilder<ValuesWrapper>(
+        body: FutureBuilder<PreferencesResult>(
           future: _getStoredValues(),
-          builder:
-              (BuildContext context, AsyncSnapshot<ValuesWrapper> snapshot) {
+          builder: (BuildContext context,
+              AsyncSnapshot<PreferencesResult> snapshot) {
             if (snapshot.hasError) {
               return Center(
                 child: Text('Error'),
@@ -59,20 +69,32 @@ class _MyAppState extends State<MyApp> {
             } else {
               return ListView(
                 children: [
+                  Container(
+                    padding: EdgeInsets.all(16.0),
+                    child: Center(
+                      child: Text(
+                        'Default preferences',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
                   _getRow(
                       'String value:',
-                      snapshot.data!.stringValue != null
-                          ? snapshot.data!.stringValue!
+                      snapshot.data!.defaultPreferencesValues.stringValue !=
+                              null
+                          ? snapshot.data!.defaultPreferencesValues.stringValue!
                           : 'Value is null'),
                   _getRow(
                       'int value:',
-                      snapshot.data!.intValue != null
-                          ? snapshot.data!.intValue.toString()
+                      snapshot.data!.defaultPreferencesValues.intValue != null
+                          ? snapshot.data!.defaultPreferencesValues.intValue
+                              .toString()
                           : 'Value is null'),
                   _getRow(
                       'bool value:',
-                      snapshot.data!.boolValue != null
-                          ? snapshot.data!.boolValue.toString()
+                      snapshot.data!.defaultPreferencesValues.boolValue != null
+                          ? snapshot.data!.defaultPreferencesValues.boolValue
+                              .toString()
                           : 'Value is null'),
                   Container(
                     padding: EdgeInsets.all(16.0),
@@ -106,6 +128,70 @@ class _MyAppState extends State<MyApp> {
                           }),
                     ),
                   ),
+                  Container(
+                    padding: EdgeInsets.all(16.0),
+                    child: Center(
+                      child: Text(
+                        'Custom preferences file',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                  _getRow(
+                      'String value:',
+                      snapshot.data!.customPreferencesValues.stringValue != null
+                          ? snapshot.data!.customPreferencesValues.stringValue!
+                          : 'Value is null'),
+                  _getRow(
+                      'int value:',
+                      snapshot.data!.customPreferencesValues.intValue != null
+                          ? snapshot.data!.customPreferencesValues.intValue
+                              .toString()
+                          : 'Value is null'),
+                  _getRow(
+                      'bool value:',
+                      snapshot.data!.customPreferencesValues.boolValue != null
+                          ? snapshot.data!.customPreferencesValues.boolValue
+                              .toString()
+                          : 'Value is null'),
+                  Container(
+                    padding: EdgeInsets.all(16.0),
+                    child: Center(
+                      child: ElevatedButton(
+                          child: Text('Save random values'),
+                          onPressed: () async {
+                            final now = DateTime.now();
+                            final random = Random();
+
+                            await _preferences.setString(
+                                STRING_REF, now.toIso8601String(),
+                                file: CUSTOM_FILE);
+                            await _preferences.setInt(
+                                INT_REF, random.nextInt(100),
+                                file: CUSTOM_FILE);
+                            await _preferences.setBool(
+                                BOOL_REF, random.nextInt(100) % 2 == 0,
+                                file: CUSTOM_FILE);
+                            setState(() {});
+                          }),
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(16.0),
+                    child: Center(
+                      child: ElevatedButton(
+                          child: Text('Remove all values'),
+                          onPressed: () async {
+                            await _preferences.remove(STRING_REF,
+                                file: CUSTOM_FILE);
+                            await _preferences.remove(INT_REF,
+                                file: CUSTOM_FILE);
+                            await _preferences.remove(BOOL_REF,
+                                file: CUSTOM_FILE);
+                            setState(() {});
+                          }),
+                    ),
+                  ),
                 ],
               );
             }
@@ -117,13 +203,25 @@ class _MyAppState extends State<MyApp> {
 
   // *************************** PRIVATE METHODS *************************** //
 
-  Future<ValuesWrapper> _getStoredValues() async {
+  Future<PreferencesResult> _getStoredValues() async {
     try {
       String? stringValue = await _preferences.getString(STRING_REF);
       int? intValue = await _preferences.getInt(INT_REF);
       bool? boolValue = await _preferences.getBool(BOOL_REF);
 
-      return ValuesWrapper(stringValue, intValue, boolValue);
+      final defaultValues = ValuesWrapper(stringValue, intValue, boolValue);
+
+      String? customStringValue =
+          await _preferences.getString(STRING_REF, file: CUSTOM_FILE);
+      int? customIntValue =
+          await _preferences.getInt(INT_REF, file: CUSTOM_FILE);
+      bool? customBoolValue =
+          await _preferences.getBool(BOOL_REF, file: CUSTOM_FILE);
+
+      final customValues =
+          ValuesWrapper(customStringValue, customIntValue, customBoolValue);
+
+      return PreferencesResult(defaultValues, customValues);
     } on Exception catch (e) {
       print(e);
       throw e;

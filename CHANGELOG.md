@@ -1,5 +1,11 @@
 # Change log
 
+## [0.5.0] - 2021-04-18
+
+### Added
+
+- Option to specify the target preference file (Android only)
+
 ## [0.4.0] - 2021-04-14
 
 ### Added

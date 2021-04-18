@@ -1,15 +1,11 @@
 package com.svprdga.async_preferences
 
-import android.content.Context
 import android.content.SharedPreferences
-import androidx.preference.PreferenceManager
 
-class Preferences(context: Context) {
+class Preferences(private val sharedPreferences: SharedPreferences) {
 
     // ****************************************** VARS ***************************************** //
 
-    private val sharedPreferences: SharedPreferences =
-            PreferenceManager.getDefaultSharedPreferences(context)
     private val editor: SharedPreferences.Editor = sharedPreferences.edit()
     
     // ************************************* PUBLIC METHODS ************************************ //
