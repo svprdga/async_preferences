@@ -46,34 +46,50 @@ public class SwiftAsyncPreferencesPlugin: NSObject, FlutterPlugin {
     // Private methods
     
     private func remove(call: FlutterMethodCall, result: FlutterResult) {
-        let list = call.arguments as! [String]
-        defaults.removeObject(forKey: list[0])
+        let list = call.arguments as! [Any]
+        
+        let key = list[1] as! String
+        
+        defaults.removeObject(forKey: key)
         result(nil)
     }
     
     private func setString(call: FlutterMethodCall, result: FlutterResult) {
-        let list = call.arguments as! [String]
-        defaults.set(list[1], forKey: list[0])
+        let list = call.arguments as! [Any]
+        
+        let key = list[1] as! String
+        let value = list[2] as! String
+        
+        defaults.set(value, forKey: key)
         result(nil)
     }
     
     private func getString(call: FlutterMethodCall, result: FlutterResult) {
-        let list = call.arguments as! [String]
-        let value = defaults.string(forKey: list[0])
+        let list = call.arguments as! [Any]
+        
+        let key = list[1] as! String
+        
+        let value = defaults.string(forKey: key)
         result(value)
     }
     
     private func setBool(call: FlutterMethodCall, result: FlutterResult) {
         let list = call.arguments as! [Any]
-        defaults.set(list[1] as! Bool, forKey: list[0] as! String)
+        
+        let key = list[1] as! String
+        let value = list[2] as! Bool
+        
+        defaults.set(value, forKey: key)
         result(nil)
     }
     
     private func getBool(call: FlutterMethodCall, result: FlutterResult) {
         let list = call.arguments as! [Any]
-        let key = list[0] as! String
+        
+        let key = list[1] as! String
+        
         if (existsKey(key: key)) {
-            let value = defaults.bool(forKey: list[0] as! String)
+            let value = defaults.bool(forKey: key)
             result(value)
         } else {
             result(nil)
@@ -82,22 +98,28 @@ public class SwiftAsyncPreferencesPlugin: NSObject, FlutterPlugin {
     
     private func setInt(call: FlutterMethodCall, result: FlutterResult) {
         let list = call.arguments as! [Any]
-        defaults.set(list[1] as! Int, forKey: list[0] as! String)
+        
+        let key = list[1] as! String
+        let value = list[2] as! Int
+        
+        defaults.set(value, forKey: key)
         result(nil)
     }
     
     private func getInt(call: FlutterMethodCall, result: FlutterResult) {
         let list = call.arguments as! [Any]
-        let key = list[0] as! String
+        
+        let key = list[1] as! String
+        
         if (existsKey(key: key)) {
-            let value = defaults.integer(forKey: list[0] as! String)
+            let value = defaults.integer(forKey: key)
             result(value)
         } else {
             result(nil)
         }
     }
     
-    func existsKey(key: String) -> Bool {
+    private func existsKey(key: String) -> Bool {
         return defaults.object(forKey: key) != nil
     }
 }
