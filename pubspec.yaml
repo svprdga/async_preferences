@@ -1,6 +1,6 @@
 name: async_preferences
 description: A flutter plugin to use local preferences asynchronously.
-version: 0.5.0
+version: 0.6.0
 homepage: https://appblaze.io
 
 environment:
