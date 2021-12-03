@@ -49,4 +49,17 @@ class Preferences(private val sharedPreferences: SharedPreferences) {
             null
         }
     }
+
+    fun setLong(id: String, value: Long): Boolean {
+        editor.putLong(id, value)
+        return editor.commit()
+    }
+
+    fun getLong(id: String): Long? {
+        return if (sharedPreferences.contains(id)) {
+            sharedPreferences.getLong(id, 0)
+        } else {
+            null
+        }
+    }
 }
