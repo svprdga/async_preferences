@@ -77,4 +77,28 @@ class AsyncPreferences {
   Future<int?> getInt(String id, {String? file}) async {
     return await _channel.invokeMethod('get_int', [file, id]);
   }
+
+  /// Save an [int] value that is going to be casted to a Long value in the native platform.
+  ///
+  /// Integer values in dart uses the same amount of bytes that Long values in native platforms, so it is safe to use this method without loosing precision.
+  ///
+  /// Optionally, specify the target [file] to perform the action
+  /// against (Android only).
+  ///
+  /// Returns true if the value was successfully saved, returns false otherwise.
+  Future<bool?> setLong(String id, int value, {String? file}) async {
+    return await _channel.invokeMethod('set_long', [file, id, value.toString()]);
+  }
+
+  /// Retrieve an [int] value by the given [id]. The value must be saved as a Long value in the native platform.
+  ///
+  /// Integer values in dart uses the same amount of bytes that Long values in native platforms, so it is safe to use this method without loosing precision.
+  ///
+  /// Optionally, specify the target [file] to perform the action
+  /// against (Android only).
+  ///
+  /// The return value will be null if the given [id] was never used.
+  Future<int?> getLong(String id, {String? file}) async {
+    return await _channel.invokeMethod('get_long', [file, id]);
+  }
 }
