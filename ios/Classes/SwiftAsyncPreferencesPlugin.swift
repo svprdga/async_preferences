@@ -32,11 +32,17 @@ public class SwiftAsyncPreferencesPlugin: NSObject, FlutterPlugin {
         case "get_bool":
             getBool(call: call, result: result)
             break;
-        case"set_int":
+        case "set_int":
             setInt(call: call, result: result)
             break;
         case "get_int":
             getInt(call: call, result: result)
+            break;
+        case "set_long":
+            setLong(call: call, result: result)
+            break;
+        case "get_long":
+            getLong(call: call, result: result)
             break;
         default:
             result(FlutterMethodNotImplemented)
@@ -111,6 +117,29 @@ public class SwiftAsyncPreferencesPlugin: NSObject, FlutterPlugin {
         
         let key = list[1] as! String
         
+        if (existsKey(key: key)) {
+            let value = defaults.integer(forKey: key)
+            result(value)
+        } else {
+            result(nil)
+        }
+    }
+    
+    private func setLong(call: FlutterMethodCall, result: FlutterResult) {
+        let list = call.arguments as! [Any]
+
+        let key = list[1] as! String
+        let value = list[2] as! String
+
+        defaults.set(Int64(value), forKey: key)
+        result(nil)
+    }
+
+    private func getLong(call: FlutterMethodCall, result: FlutterResult) {
+        let list = call.arguments as! [Any]
+
+        let key = list[1] as! String
+
         if (existsKey(key: key)) {
             let value = defaults.integer(forKey: key)
             result(value)
