@@ -1,5 +1,11 @@
 # Change log
 
+## [0.6.0] - 2021-12-03
+
+### Added
+
+- Add support for native Long type
+
 ## [0.5.0] - 2021-04-18
 
 ### Added
