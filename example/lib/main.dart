@@ -11,8 +11,14 @@ class ValuesWrapper {
   final String? stringValue;
   final int? intValue;
   final bool? boolValue;
+  final int? longValue;
 
-  ValuesWrapper(this.stringValue, this.intValue, this.boolValue);
+  ValuesWrapper(
+    this.stringValue,
+    this.intValue,
+    this.boolValue,
+    this.longValue,
+  );
 }
 
 class PreferencesResult {
@@ -34,6 +40,7 @@ class _MyAppState extends State<MyApp> {
   static const STRING_REF = 'string_value';
   static const INT_REF = 'int_value';
   static const BOOL_REF = 'bool_value';
+  static const LONG_REF = 'long_value';
 
   static const CUSTOM_FILE = 'custom';
 
@@ -96,6 +103,12 @@ class _MyAppState extends State<MyApp> {
                           ? snapshot.data!.defaultPreferencesValues.boolValue
                               .toString()
                           : 'Value is null'),
+                  _getRow(
+                      'long value:',
+                      snapshot.data!.defaultPreferencesValues.longValue != null
+                          ? snapshot.data!.defaultPreferencesValues.longValue
+                              .toString()
+                          : 'Value is null'),
                   Container(
                     padding: EdgeInsets.all(16.0),
                     child: Center(
@@ -111,6 +124,7 @@ class _MyAppState extends State<MyApp> {
                                 INT_REF, random.nextInt(100));
                             await _preferences.setBool(
                                 BOOL_REF, random.nextInt(100) % 2 == 0);
+                            await _preferences.setLong(LONG_REF, 2147483647);
                             setState(() {});
                           }),
                     ),
@@ -124,6 +138,7 @@ class _MyAppState extends State<MyApp> {
                             await _preferences.remove(STRING_REF);
                             await _preferences.remove(INT_REF);
                             await _preferences.remove(BOOL_REF);
+                            await _preferences.remove(LONG_REF);
                             setState(() {});
                           }),
                     ),
@@ -154,6 +169,12 @@ class _MyAppState extends State<MyApp> {
                           ? snapshot.data!.customPreferencesValues.boolValue
                               .toString()
                           : 'Value is null'),
+                  _getRow(
+                      'bool value:',
+                      snapshot.data!.customPreferencesValues.longValue != null
+                          ? snapshot.data!.customPreferencesValues.longValue
+                              .toString()
+                          : 'Value is null'),
                   Container(
                     padding: EdgeInsets.all(16.0),
                     child: Center(
@@ -172,6 +193,8 @@ class _MyAppState extends State<MyApp> {
                             await _preferences.setBool(
                                 BOOL_REF, random.nextInt(100) % 2 == 0,
                                 file: CUSTOM_FILE);
+                            await _preferences.setLong(LONG_REF, 2147483647,
+                                file: CUSTOM_FILE);
                             setState(() {});
                           }),
                     ),
@@ -187,6 +210,8 @@ class _MyAppState extends State<MyApp> {
                             await _preferences.remove(INT_REF,
                                 file: CUSTOM_FILE);
                             await _preferences.remove(BOOL_REF,
+                                file: CUSTOM_FILE);
+                            await _preferences.remove(LONG_REF,
                                 file: CUSTOM_FILE);
                             setState(() {});
                           }),
@@ -208,8 +233,14 @@ class _MyAppState extends State<MyApp> {
       String? stringValue = await _preferences.getString(STRING_REF);
       int? intValue = await _preferences.getInt(INT_REF);
       bool? boolValue = await _preferences.getBool(BOOL_REF);
+      int? longValue = await _preferences.getLong(LONG_REF);
 
-      final defaultValues = ValuesWrapper(stringValue, intValue, boolValue);
+      final defaultValues = ValuesWrapper(
+        stringValue,
+        intValue,
+        boolValue,
+        longValue,
+      );
 
       String? customStringValue =
           await _preferences.getString(STRING_REF, file: CUSTOM_FILE);
@@ -217,9 +248,15 @@ class _MyAppState extends State<MyApp> {
           await _preferences.getInt(INT_REF, file: CUSTOM_FILE);
       bool? customBoolValue =
           await _preferences.getBool(BOOL_REF, file: CUSTOM_FILE);
+      int? customLongValue =
+          await _preferences.getLong(LONG_REF, file: CUSTOM_FILE);
 
-      final customValues =
-          ValuesWrapper(customStringValue, customIntValue, customBoolValue);
+      final customValues = ValuesWrapper(
+        customStringValue,
+        customIntValue,
+        customBoolValue,
+        customLongValue,
+      );
 
       return PreferencesResult(defaultValues, customValues);
     } on Exception catch (e) {

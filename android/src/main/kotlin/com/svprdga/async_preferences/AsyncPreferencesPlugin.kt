@@ -39,6 +39,8 @@ class AsyncPreferencesPlugin : FlutterPlugin, MethodCallHandler {
             "get_bool" -> getBoolean(call, result)
             "set_int" -> setInt(call, result)
             "get_int" -> getInt(call, result)
+            "set_long" -> setLong(call, result)
+            "get_long" -> getLong(call, result)
             else -> result.notImplemented()
         }
     }
@@ -78,7 +80,7 @@ class AsyncPreferencesPlugin : FlutterPlugin, MethodCallHandler {
             result.error("remove_error", e.message, null)
         }
     }
-    
+
     private fun setString(call: MethodCall, result: MethodChannel.Result) {
         try {
             val list = call.arguments as ArrayList<Any>
@@ -172,6 +174,38 @@ class AsyncPreferencesPlugin : FlutterPlugin, MethodCallHandler {
             result.success(value)
         } catch (e: Exception) {
             result.error("get_int_error", e.message, null)
+        }
+    }
+
+    private fun setLong(call: MethodCall, result: MethodChannel.Result) {
+        try {
+            val list = call.arguments as ArrayList<Any>
+
+            val preferenceFile = list[0] as String?
+            val preferences = getPreferences(preferenceFile)
+
+            val key = list[1] as String
+            val value = list[2] as String
+
+            result.success(preferences.setLong(key, value.toLong()))
+        } catch (e: Exception) {
+            result.error("set_long_error", e.message, null)
+        }
+    }
+
+    private fun getLong(call: MethodCall, result: MethodChannel.Result) {
+        try {
+            val list = call.arguments as ArrayList<Any>
+
+            val preferenceFile = list[0] as String?
+            val preferences = getPreferences(preferenceFile)
+
+            val key = list[1] as String
+
+            val value = preferences.getLong(key)
+            result.success(value)
+        } catch (e: Exception) {
+            result.error("get_long_error", e.message, null)
         }
     }
 
