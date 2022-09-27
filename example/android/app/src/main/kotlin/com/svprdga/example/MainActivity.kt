@@ -1,4 +1,4 @@
-package com.svprdga.async_preferences_example
+package com.svprdga.example
 
 import io.flutter.embedding.android.FlutterActivity
 

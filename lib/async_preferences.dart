@@ -43,7 +43,7 @@ class AsyncPreferences {
   /// against (Android only).
   ///
   /// Returns true if the value was successfully saved, returns false otherwise.
-  Future<bool?> setBool(String id, bool value, {String? file}) async {
+  Future<bool?> setBool(String id, {required bool value, String? file}) async {
     return _channel.invokeMethod('set_bool', [file, id, value]);
   }
 

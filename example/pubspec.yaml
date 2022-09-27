@@ -3,14 +3,14 @@ description: Demonstrates how to use the async_preferences plugin.
 publish_to: 'none'
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: '>=2.17.5 <3.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
   async_preferences:
     path: ../
-  cupertino_icons: ^1.0.2
+  cupertino_icons: 1.0.5
 
 dev_dependencies:
   flutter_test:

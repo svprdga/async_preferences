@@ -122,8 +122,8 @@ class _MyAppState extends State<MyApp> {
                                 STRING_REF, now.toIso8601String());
                             await _preferences.setInt(
                                 INT_REF, random.nextInt(100));
-                            await _preferences.setBool(
-                                BOOL_REF, random.nextInt(100) % 2 == 0);
+                            await _preferences.setBool(BOOL_REF,
+                                value: random.nextInt(100) % 2 == 0);
                             await _preferences.setLong(LONG_REF, 2147483647);
                             setState(() {});
                           }),
@@ -190,8 +190,8 @@ class _MyAppState extends State<MyApp> {
                             await _preferences.setInt(
                                 INT_REF, random.nextInt(100),
                                 file: CUSTOM_FILE);
-                            await _preferences.setBool(
-                                BOOL_REF, random.nextInt(100) % 2 == 0,
+                            await _preferences.setBool(BOOL_REF,
+                                value: random.nextInt(100) % 2 == 0,
                                 file: CUSTOM_FILE);
                             await _preferences.setLong(LONG_REF, 2147483647,
                                 file: CUSTOM_FILE);
