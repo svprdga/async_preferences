@@ -1,5 +1,11 @@
 # Change log
 
+## [0.7.0] - 2022-10-06
+
+### Changed
+
+- Update dependencies
+
 ## [0.6.0] - 2021-12-03
 
 ### Added
