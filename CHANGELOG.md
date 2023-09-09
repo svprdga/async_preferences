@@ -1,5 +1,16 @@
 # Change log
 
+## [0.8.0] - 2023-09-09
+
+### Added
+
+- Instructions in the README.md file
+
+### Changed
+
+- Update dependencies
+- Project license
+
 ## [0.7.0] - 2022-10-06
 
 ### Changed
