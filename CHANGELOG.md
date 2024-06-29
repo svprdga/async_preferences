@@ -1,5 +1,12 @@
 # Change log
 
+## [1.0.0] - 2024-06-29
+
+### Added
+
+- Update Gradle project to adapt it to the latest version
+- Updated example project
+
 ## [0.9.0] - 2024-03-16
 
 ### Changed
