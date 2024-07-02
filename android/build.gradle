@@ -32,7 +32,7 @@ android {
     }
     defaultConfig {
         minSdkVersion 16
-        compileSdk 33
+        compileSdk 34
     }
     lintOptions {
         disable 'InvalidPackage'
@@ -43,5 +43,4 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     implementation 'androidx.preference:preference-ktx:1.2.1'
-
 }
