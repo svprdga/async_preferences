@@ -10,7 +10,7 @@ dependencies:
     sdk: flutter
   async_preferences:
     path: ../
-  cupertino_icons: 1.0.5
+  cupertino_icons: ^1.0.8
 
 dev_dependencies:
   flutter_test:
