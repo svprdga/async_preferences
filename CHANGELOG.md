@@ -1,5 +1,11 @@
 # Change log
 
+## [1.0.1] - 2024-10-16
+
+### Fixed
+
+- Upgrade native android dependencies
+
 ## [1.0.0] - 2024-06-29
 
 ### Added

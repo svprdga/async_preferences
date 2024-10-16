@@ -45,3 +45,7 @@ Save and get a value in a custom file (Android only):
 await preferences.setString('custom_file_value', 'your_value', file: 'custom_file');
 final value = await preferences.getString('custom_file_value', file: 'custom_file');
 ```
+
+## How to contribute
+
+Thank you for your interest in contributing! Pull requests that fix bugs or improve the stability of the project are appreciated. If you plan to open a pull request, be sure to direct it to the `develop` branch. This helps to review, test, and merge changes in an orderly manner before including them in the main branch.
