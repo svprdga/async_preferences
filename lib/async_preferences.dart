@@ -3,11 +3,7 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 
 class AsyncPreferences {
-  // ********************************* VARS ******************************** //
-
   static const MethodChannel _channel = MethodChannel('async_preferences');
-
-  //***************************** PUBLIC METHODS *************************** //
 
   /// Remove a value with the specified [id].
   ///

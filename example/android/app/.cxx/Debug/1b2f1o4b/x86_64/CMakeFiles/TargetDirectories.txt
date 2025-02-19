@@ -1,0 +1,2 @@
+/Users/svprdga/code/personal/flutter/async_preferences/example/android/app/.cxx/Debug/1b2f1o4b/x86_64/CMakeFiles/edit_cache.dir
+/Users/svprdga/code/personal/flutter/async_preferences/example/android/app/.cxx/Debug/1b2f1o4b/x86_64/CMakeFiles/rebuild_cache.dir

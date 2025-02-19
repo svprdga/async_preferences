@@ -1,7 +1,6 @@
 package com.svprdga.async_preferences
 
 import android.content.Context
-import android.content.SharedPreferences
 import androidx.annotation.NonNull
 import androidx.preference.PreferenceManager
 
@@ -10,19 +9,14 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
-import io.flutter.plugin.common.PluginRegistry.Registrar
 
 import java.util.*
 
 class AsyncPreferencesPlugin : FlutterPlugin, MethodCallHandler {
 
-    // ****************************************** VARS ***************************************** //
-
     private lateinit var channel: MethodChannel
     private lateinit var context: Context
     private var preferences = HashMap<String?, Preferences>()
-
-    // *************************************** LIFECYCLE *************************************** //
 
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, "async_preferences")
@@ -49,8 +43,6 @@ class AsyncPreferencesPlugin : FlutterPlugin, MethodCallHandler {
         channel.setMethodCallHandler(null)
     }
 
-    // ************************************ PRIVATE METHODS ************************************ //
-
     private fun getPreferences(file: String? = null): Preferences {
         if (preferences.containsKey(file)) {
             return preferences[file]!!
@@ -59,7 +51,7 @@ class AsyncPreferencesPlugin : FlutterPlugin, MethodCallHandler {
         val newPreference = if (file == null) {
             PreferenceManager.getDefaultSharedPreferences(context)
         } else {
-            context.getSharedPreferences(file!!, Context.MODE_PRIVATE)
+            context.getSharedPreferences(file, Context.MODE_PRIVATE)
         }
 
         preferences[file] = Preferences(newPreference)

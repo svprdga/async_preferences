@@ -6,15 +6,15 @@ environment:
   sdk: '>=2.17.5 <3.0.0'
 
 dependencies:
-  flutter:
-    sdk: flutter
   async_preferences:
     path: ../
-  cupertino_icons: ^1.0.8
+  flutter:
+    sdk: flutter
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  lint: 2.6.1
 
 flutter:
   uses-material-design: true
