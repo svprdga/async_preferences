@@ -4,22 +4,18 @@ import android.content.SharedPreferences
 
 class Preferences(private val sharedPreferences: SharedPreferences) {
 
-    // ****************************************** VARS ***************************************** //
-
     private val editor: SharedPreferences.Editor = sharedPreferences.edit()
-    
-    // ************************************* PUBLIC METHODS ************************************ //
 
     fun remove(id: String): Boolean {
         editor.remove(id)
         return editor.commit()
     }
-    
+
     fun setString(id: String, value: String): Boolean {
         editor.putString(id, value)
         return editor.commit()
     }
-    
+
     fun getString(id: String): String? {
         return sharedPreferences.getString(id, null)
     }

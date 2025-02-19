@@ -14,9 +14,9 @@ EXTERNAL SOURCES:
     :path: Flutter
 
 SPEC CHECKSUMS:
-  async_preferences: f3268e3d74e9fa7cae14b53be5ba23a4f657a7a1
+  async_preferences: 3295a84749baec35e004440eaddd4458fdc61b94
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
 
 PODFILE CHECKSUM: 04497cb8886d24b58fdd741bb008f233935e54e2
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.16.2
