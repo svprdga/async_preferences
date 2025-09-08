@@ -2,6 +2,7 @@ package com.svprdga.async_preferences
 
 import android.content.Context
 import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.SharedPreferencesMigration as PreferencesMigration
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
@@ -12,9 +13,21 @@ import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
-class PreferencesDataStore(private val context: Context, name: String? = null) {
+class PreferencesDataStore(private val context: Context, private val name: String? = null) {
 
-    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = name ?: "${context.packageName}_preferences")
+    private val dataStoreName = name ?: "${context.packageName}_preferences"
+
+    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(
+        name = dataStoreName,
+        produceMigrations = { ctx ->
+            listOf(
+                PreferencesMigration(
+                    ctx,
+                    dataStoreName
+                )
+            )
+        }
+    )
 
     suspend fun remove(id: String) {
         context.dataStore.edit { preferences ->

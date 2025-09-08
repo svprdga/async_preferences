@@ -1,7 +1,6 @@
 package com.svprdga.async_preferences
 
 import android.content.Context
-import androidx.annotation.NonNull
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -12,21 +11,19 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 
-import java.util.*
-
 class AsyncPreferencesPlugin : FlutterPlugin, MethodCallHandler {
 
     private lateinit var channel: MethodChannel
     private lateinit var context: Context
-    private var preferencesDataStores = HashMap<String?, PreferencesDataStore>()
+    private val preferencesDataStores = mutableMapOf<String?, PreferencesDataStore>()
 
-    override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
+    override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, "async_preferences")
         channel.setMethodCallHandler(this)
         context = flutterPluginBinding.getApplicationContext()
     }
 
-    override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: MethodChannel.Result) {
+    override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
         when (call.method) {
             "remove" -> remove(call, result)
             "set_string" -> setString(call, result)
@@ -41,18 +38,14 @@ class AsyncPreferencesPlugin : FlutterPlugin, MethodCallHandler {
         }
     }
 
-    override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
+    override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
         channel.setMethodCallHandler(null)
     }
 
     private fun getPreferencesDataStore(file: String? = null): PreferencesDataStore {
-        if (preferencesDataStores.containsKey(file)) {
-            return preferencesDataStores[file]!!
+        return preferencesDataStores.getOrPut(file) {
+            PreferencesDataStore(context, file)
         }
-
-        val newPreferenceDataStore = PreferencesDataStore(context, file)
-        preferencesDataStores[file] = newPreferenceDataStore
-        return preferencesDataStores[file]!!
     }
 
     private fun remove(call: MethodCall, result: MethodChannel.Result) {
