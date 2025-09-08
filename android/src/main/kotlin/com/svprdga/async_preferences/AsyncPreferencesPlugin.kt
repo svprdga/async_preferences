@@ -2,7 +2,9 @@ package com.svprdga.async_preferences
 
 import android.content.Context
 import androidx.annotation.NonNull
-import androidx.preference.PreferenceManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
@@ -16,7 +18,7 @@ class AsyncPreferencesPlugin : FlutterPlugin, MethodCallHandler {
 
     private lateinit var channel: MethodChannel
     private lateinit var context: Context
-    private var preferences = HashMap<String?, Preferences>()
+    private var preferencesDataStores = HashMap<String?, PreferencesDataStore>()
 
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, "async_preferences")
@@ -43,161 +45,179 @@ class AsyncPreferencesPlugin : FlutterPlugin, MethodCallHandler {
         channel.setMethodCallHandler(null)
     }
 
-    private fun getPreferences(file: String? = null): Preferences {
-        if (preferences.containsKey(file)) {
-            return preferences[file]!!
+    private fun getPreferencesDataStore(file: String? = null): PreferencesDataStore {
+        if (preferencesDataStores.containsKey(file)) {
+            return preferencesDataStores[file]!!
         }
 
-        val newPreference = if (file == null) {
-            PreferenceManager.getDefaultSharedPreferences(context)
-        } else {
-            context.getSharedPreferences(file, Context.MODE_PRIVATE)
-        }
-
-        preferences[file] = Preferences(newPreference)
-        return preferences[file]!!
+        val newPreferenceDataStore = PreferencesDataStore(context, file)
+        preferencesDataStores[file] = newPreferenceDataStore
+        return preferencesDataStores[file]!!
     }
 
     private fun remove(call: MethodCall, result: MethodChannel.Result) {
-        try {
-            val list = call.arguments as ArrayList<Any>
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val list = call.arguments as ArrayList<Any>
 
-            val preferenceFile = list[0] as String?
-            val preferences = getPreferences(preferenceFile)
+                val preferenceFile = list[0] as String?
+                val preferencesDataStore = getPreferencesDataStore(preferenceFile)
 
-            val key = list[1] as String
+                val key = list[1] as String
 
-            result.success(preferences.remove(key))
-        } catch (e: Exception) {
-            result.error("remove_error", e.message, null)
+                preferencesDataStore.remove(key)
+                result.success(true)
+            } catch (e: Exception) {
+                result.error("remove_error", e.message, null)
+            }
         }
     }
 
     private fun setString(call: MethodCall, result: MethodChannel.Result) {
-        try {
-            val list = call.arguments as ArrayList<Any>
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val list = call.arguments as ArrayList<Any>
 
-            val preferenceFile = list[0] as String?
-            val preferences = getPreferences(preferenceFile)
+                val preferenceFile = list[0] as String?
+                val preferencesDataStore = getPreferencesDataStore(preferenceFile)
 
-            val key = list[1] as String
-            val value = list[2] as String
+                val key = list[1] as String
+                val value = list[2] as String
 
-            result.success(preferences.setString(key, value))
-        } catch (e: Exception) {
-            result.error("set_string_error", e.message, null)
+                preferencesDataStore.setString(key, value)
+                result.success(true)
+            } catch (e: Exception) {
+                result.error("set_string_error", e.message, null)
+            }
         }
     }
 
     private fun getString(call: MethodCall, result: MethodChannel.Result) {
-        try {
-            val list = call.arguments as ArrayList<Any>
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val list = call.arguments as ArrayList<Any>
 
-            val preferenceFile = list[0] as String?
-            val preferences = getPreferences(preferenceFile)
+                val preferenceFile = list[0] as String?
+                val preferencesDataStore = getPreferencesDataStore(preferenceFile)
 
-            val key = list[1] as String
+                val key = list[1] as String
 
-            val value = preferences.getString(key)
-            result.success(value)
-        } catch (e: Exception) {
-            result.error("get_string_error", e.message, null)
+                val value = preferencesDataStore.getString(key)
+                result.success(value)
+            } catch (e: Exception) {
+                result.error("get_string_error", e.message, null)
+            }
         }
     }
 
     private fun setBoolean(call: MethodCall, result: MethodChannel.Result) {
-        try {
-            val list = call.arguments as ArrayList<Any>
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val list = call.arguments as ArrayList<Any>
 
-            val preferenceFile = list[0] as String?
-            val preferences = getPreferences(preferenceFile)
+                val preferenceFile = list[0] as String?
+                val preferencesDataStore = getPreferencesDataStore(preferenceFile)
 
-            val key = list[1] as String
-            val value = list[2] as Boolean
+                val key = list[1] as String
+                val value = list[2] as Boolean
 
-            result.success(preferences.setBoolean(key, value))
-        } catch (e: Exception) {
-            result.error("set_boolean_error", e.message, null)
+                preferencesDataStore.setBoolean(key, value)
+                result.success(true)
+            } catch (e: Exception) {
+                result.error("set_boolean_error", e.message, null)
+            }
         }
     }
 
     private fun getBoolean(call: MethodCall, result: MethodChannel.Result) {
-        try {
-            val list = call.arguments as ArrayList<Any>
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val list = call.arguments as ArrayList<Any>
 
-            val preferenceFile = list[0] as String?
-            val preferences = getPreferences(preferenceFile)
+                val preferenceFile = list[0] as String?
+                val preferencesDataStore = getPreferencesDataStore(preferenceFile)
 
-            val key = list[1] as String
+                val key = list[1] as String
 
-            val value = preferences.getBoolean(key)
-            result.success(value)
-        } catch (e: Exception) {
-            result.error("get_boolean_error", e.message, null)
+                val value = preferencesDataStore.getBoolean(key)
+                result.success(value)
+            } catch (e: Exception) {
+                result.error("get_boolean_error", e.message, null)
+            }
         }
     }
 
     private fun setInt(call: MethodCall, result: MethodChannel.Result) {
-        try {
-            val list = call.arguments as ArrayList<Any>
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val list = call.arguments as ArrayList<Any>
 
-            val preferenceFile = list[0] as String?
-            val preferences = getPreferences(preferenceFile)
+                val preferenceFile = list[0] as String?
+                val preferencesDataStore = getPreferencesDataStore(preferenceFile)
 
-            val key = list[1] as String
-            val value = list[2] as Int
+                val key = list[1] as String
+                val value = list[2] as Int
 
-            result.success(preferences.setInt(key, value))
-        } catch (e: Exception) {
-            result.error("set_int_error", e.message, null)
+                preferencesDataStore.setInt(key, value)
+                result.success(true)
+            } catch (e: Exception) {
+                result.error("set_int_error", e.message, null)
+            }
         }
     }
 
     private fun getInt(call: MethodCall, result: MethodChannel.Result) {
-        try {
-            val list = call.arguments as ArrayList<Any>
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val list = call.arguments as ArrayList<Any>
 
-            val preferenceFile = list[0] as String?
-            val preferences = getPreferences(preferenceFile)
+                val preferenceFile = list[0] as String?
+                val preferencesDataStore = getPreferencesDataStore(preferenceFile)
 
-            val key = list[1] as String
+                val key = list[1] as String
 
-            val value = preferences.getInt(key)
-            result.success(value)
-        } catch (e: Exception) {
-            result.error("get_int_error", e.message, null)
+                val value = preferencesDataStore.getInt(key)
+                result.success(value)
+            } catch (e: Exception) {
+                result.error("get_int_error", e.message, null)
+            }
         }
     }
 
     private fun setLong(call: MethodCall, result: MethodChannel.Result) {
-        try {
-            val list = call.arguments as ArrayList<Any>
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val list = call.arguments as ArrayList<Any>
 
-            val preferenceFile = list[0] as String?
-            val preferences = getPreferences(preferenceFile)
+                val preferenceFile = list[0] as String?
+                val preferencesDataStore = getPreferencesDataStore(preferenceFile)
 
-            val key = list[1] as String
-            val value = list[2] as String
+                val key = list[1] as String
+                val value = list[2] as String
 
-            result.success(preferences.setLong(key, value.toLong()))
-        } catch (e: Exception) {
-            result.error("set_long_error", e.message, null)
+                preferencesDataStore.setLong(key, value.toLong())
+                result.success(true)
+            } catch (e: Exception) {
+                result.error("set_long_error", e.message, null)
+            }
         }
     }
 
     private fun getLong(call: MethodCall, result: MethodChannel.Result) {
-        try {
-            val list = call.arguments as ArrayList<Any>
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val list = call.arguments as ArrayList<Any>
 
-            val preferenceFile = list[0] as String?
-            val preferences = getPreferences(preferenceFile)
+                val preferenceFile = list[0] as String?
+                val preferencesDataStore = getPreferencesDataStore(preferenceFile)
 
-            val key = list[1] as String
+                val key = list[1] as String
 
-            val value = preferences.getLong(key)
-            result.success(value)
-        } catch (e: Exception) {
-            result.error("get_long_error", e.message, null)
+                val value = preferencesDataStore.getLong(key)
+                result.success(value)
+            } catch (e: Exception) {
+                result.error("get_long_error", e.message, null)
+            }
         }
     }
 
