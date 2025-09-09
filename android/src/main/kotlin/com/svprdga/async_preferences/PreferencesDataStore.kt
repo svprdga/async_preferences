@@ -13,7 +13,11 @@ import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
-class PreferencesDataStore(private val context: Context, private val name: String? = null) {
+class PreferencesDataStore(
+    private val context: Context,
+    private val name: String? = null,
+    private val keysToMigrate: List<String>
+) {
 
     private val dataStoreName = name ?: "${context.packageName}_preferences"
 
@@ -23,7 +27,8 @@ class PreferencesDataStore(private val context: Context, private val name: Strin
             listOf(
                 PreferencesMigration(
                     ctx,
-                    dataStoreName
+                    dataStoreName,
+                    keysToMigrate.toSet()
                 )
             )
         }

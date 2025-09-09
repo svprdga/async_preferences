@@ -16,6 +16,7 @@ class AsyncPreferencesPlugin : FlutterPlugin, MethodCallHandler {
     private lateinit var channel: MethodChannel
     private lateinit var context: Context
     private val preferencesDataStores = mutableMapOf<String?, PreferencesDataStore>()
+    private var keysToMigrate: List<String> = emptyList()
 
     override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, "async_preferences")
@@ -25,6 +26,7 @@ class AsyncPreferencesPlugin : FlutterPlugin, MethodCallHandler {
 
     override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
         when (call.method) {
+            "keys_to_migrate" -> setKeysToMigrate(call, result)
             "remove" -> remove(call, result)
             "set_string" -> setString(call, result)
             "get_string" -> getString(call, result)
@@ -44,7 +46,7 @@ class AsyncPreferencesPlugin : FlutterPlugin, MethodCallHandler {
 
     private fun getPreferencesDataStore(file: String? = null): PreferencesDataStore {
         return preferencesDataStores.getOrPut(file) {
-            PreferencesDataStore(context, file)
+            PreferencesDataStore(context, file, keysToMigrate)
         }
     }
 
@@ -211,6 +213,16 @@ class AsyncPreferencesPlugin : FlutterPlugin, MethodCallHandler {
             } catch (e: Exception) {
                 result.error("get_long_error", e.message, null)
             }
+        }
+    }
+
+    private fun setKeysToMigrate(call: MethodCall, result: MethodChannel.Result) {
+        try {
+            @Suppress("UNCHECKED_CAST")
+            keysToMigrate = call.arguments as List<String>
+            result.success(null)
+        } catch (e: Exception) {
+            result.error("keys_to_migrate_error", e.message, null)
         }
     }
 

@@ -2,8 +2,57 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 
+/// AsyncPreferences provides a simple key-value storage solution for Flutter
+/// applications.
+///
+/// **IMPORTANT MIGRATION NOTICE:**
+/// Starting from version 2.0.0, this plugin migrates from SharedPreferences
+/// to DataStore on Android for better performance and reliability.
+/// During the first app launch after upgrading to version 2.X.X, a one-time
+/// migration will occur to transfer your specified keys from SharedPreferences
+/// to DataStore.
+///
+/// **WARNING:** Never downgrade this plugin below version 2.X.X after using it,
+/// as this would cause permanent data loss for your users.
+/// The DataStore format is not compatible with SharedPreferences.
+///
+/// The migration is selective - only the keys you specify in the constructor
+/// will be migrated, leaving other plugin data intact in SharedPreferences.
 class AsyncPreferences {
   static const MethodChannel _channel = MethodChannel('async_preferences');
+
+  /// Creates a new [AsyncPreferences] instance.
+  ///
+  /// **Required parameter:**
+  /// - [keysToMigrate]: A list of preference keys that should be migrated from
+  ///   SharedPreferences to DataStore. Only specify keys that belong to your
+  ///   application to avoid interfering with other plugins.
+  ///
+  /// **Migration behavior:**
+  /// - On first app launch with version 2.X.X, specified keys will be migrated
+  ///   from SharedPreferences to DataStore
+  /// - Keys not in this list will remain in SharedPreferences for other plugins
+  /// - The migration happens only once per app installation
+  /// - The migration is idempotent: you can safely declare your keys and leave
+  ///   them in the constructor, subsequent app launches will not re-migrate
+  /// - After migration, your app will use DataStore for all operations
+  ///
+  /// **Example:**
+  /// ```dart
+  /// final prefs = AsyncPreferences(keysToMigrate: [
+  ///   'user_name',
+  ///   'user_email',
+  ///   'app_settings',
+  ///   'user_preferences'
+  /// ]);
+  /// ```
+  ///
+  /// **Version compatibility:**
+  /// - Versions < 2.0.0: Uses SharedPreferences
+  /// - Versions >= 2.0.0: Uses DataStore with selective migration
+  AsyncPreferences({required List<String> keysToMigrate}) {
+    _channel.invokeMethod('keys_to_migrate', keysToMigrate);
+  }
 
   /// Remove a value with the specified [id].
   ///
