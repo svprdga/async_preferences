@@ -2,7 +2,7 @@ package com.svprdga.async_preferences
 
 import android.content.Context
 import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.SharedPreferencesMigration as PreferencesMigration
+import androidx.datastore.migrations.SharedPreferencesMigration
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
@@ -25,10 +25,10 @@ class PreferencesDataStore(
         name = dataStoreName,
         produceMigrations = { ctx ->
             listOf(
-                PreferencesMigration(
-                    ctx,
-                    dataStoreName,
-                    keysToMigrate.toSet()
+                SharedPreferencesMigration(
+                    context = ctx,
+                    sharedPreferencesName = dataStoreName,
+                    keysToMigrate = keysToMigrate.toSet()
                 )
             )
         }
