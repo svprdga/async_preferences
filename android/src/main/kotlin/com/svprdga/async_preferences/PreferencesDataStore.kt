@@ -1,6 +1,7 @@
 package com.svprdga.async_preferences
 
 import android.content.Context
+import android.util.Log
 import androidx.datastore.core.DataMigration
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.SharedPreferencesMigration
@@ -42,6 +43,11 @@ class PreferencesDataStore(
                     val sharedPreferences = context.getSharedPreferences(name, Context.MODE_PRIVATE)
 
                     val allValues = sharedPreferences.all
+
+                    // TODO
+                    Log.d("DS-MIG", "SP keys=${allValues}")
+                    Log.d("DS-MIG", "keysToMigrate=$keysToMigrate")
+
                     keysToMigrate.forEach { key ->
                         val value = allValues[key]
                         
@@ -52,6 +58,10 @@ class PreferencesDataStore(
                             is Long -> out[longPreferencesKey(key)] = value
                         }
                     }
+
+                    // TODO
+                    Log.d("DS-MIG", "Migrated=$out")
+
 
                     return out
                 }
