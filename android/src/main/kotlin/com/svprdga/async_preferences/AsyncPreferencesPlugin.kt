@@ -46,7 +46,7 @@ class AsyncPreferencesPlugin : FlutterPlugin, MethodCallHandler {
 
     private fun getPreferencesDataStore(file: String? = null): PreferencesDataStore {
         return preferencesDataStores.getOrPut(file) {
-            PreferencesDataStore(context, file, keysToMigrate)
+            PreferencesDataStore(context, keysToMigrate, file)
         }
     }
 
