@@ -27,18 +27,20 @@ class PreferencesDataStore(
         name = dataStoreName,
         produceMigrations = { context ->
             listOf(object: DataMigration<Preferences> {
-                override suspend fun shouldMigrate(currentData: Preferences): Boolean {
-                    val sharedPreferences = context.getSharedPreferences(name, Context.MODE_PRIVATE)
-                    return keysToMigrate.any { key ->
-                        sharedPreferences.contains(key) && !currentData.contains(stringPreferencesKey(key)) && 
-                        !currentData.contains(booleanPreferencesKey(key)) && 
-                        !currentData.contains(intPreferencesKey(key)) && 
-                        !currentData.contains(longPreferencesKey(key))
-                    }
-                }
+                override suspend fun shouldMigrate(currentData: Preferences) = true
+//                override suspend fun shouldMigrate(currentData: Preferences): Boolean {
+//                    val sharedPreferences = context.getSharedPreferences(name, Context.MODE_PRIVATE)
+//                    return keysToMigrate.any { key ->
+//                        sharedPreferences.contains(key) && !currentData.contains(stringPreferencesKey(key)) &&
+//                        !currentData.contains(booleanPreferencesKey(key)) &&
+//                        !currentData.contains(intPreferencesKey(key)) &&
+//                        !currentData.contains(longPreferencesKey(key))
+//                    }
+//                }
 
                 override suspend fun migrate(currentData: Preferences): Preferences {
                     val out = currentData.toMutablePreferences()
+                    Log.d("DS-MIG", "Initial=$out")
 
                     val sharedPreferences = context.getSharedPreferences(name, Context.MODE_PRIVATE)
 
