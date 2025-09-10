@@ -17,6 +17,9 @@ public class SwiftAsyncPreferencesPlugin: NSObject, FlutterPlugin {
     
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         switch(call.method) {
+        case "keys_to_migrate":
+            setKeysToMigrate(call: call, result: result)
+            break;
         case "remove":
             remove(call: call, result: result)
             break;
@@ -150,5 +153,12 @@ public class SwiftAsyncPreferencesPlugin: NSObject, FlutterPlugin {
     
     private func existsKey(key: String) -> Bool {
         return defaults.object(forKey: key) != nil
+    }
+    
+    private func setKeysToMigrate(call: FlutterMethodCall, result: FlutterResult) {
+        // iOS doesn't need migration like Android (SharedPreferences -> DataStore)
+        // UserDefaults is already the native preference system
+        // Just acknowledge the call and do nothing
+        result(nil)
     }
 }

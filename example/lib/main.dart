@@ -50,7 +50,14 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    _preferences = AsyncPreferences(keysToMigrate: [_stringRef, _intRef]);
+    _preferences = AsyncPreferences(
+      keysToMigrate: [
+        _stringRef,
+        _intRef,
+        _boolRef,
+        _longRef,
+      ],
+    );
   }
 
   @override
