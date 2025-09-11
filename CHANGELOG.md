@@ -1,10 +1,14 @@
 # Change log
 
-## [1.0.3] - 2025-09-11
+## [1.1.0] - 2025-09-11
+
+### Changed
+
+- Updated Android build toolchain (Kotlin 2.1.0, AGP 8.1.1, Gradle 8.14.3, compileSdk 35, JVM target 11)
 
 ### Fixed
 
-- Move calls containing the Preferences API to a background operation
+- Moved calls containing the Preferences API to background operations to prevent potential UI freezes (ANRs)
 
 ## [1.0.2] - 2025-02-19
 
