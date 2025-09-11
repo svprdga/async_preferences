@@ -9,7 +9,7 @@ class AsyncPreferences {
   ///
   /// Optionally, specify the target [file] to perform the action
   /// against (Android only).
-  Future<bool?> remove(String id, {String? file}) async {
+  Future<bool?> remove(String id, {String? file}) {
     return _channel.invokeMethod('remove', [file, id]);
   }
 
@@ -19,7 +19,7 @@ class AsyncPreferences {
   /// against (Android only).
   ///
   /// Returns true if the value was successfully saved, returns false otherwise.
-  Future<bool?> setString(String id, String value, {String? file}) async {
+  Future<bool?> setString(String id, String value, {String? file}) {
     return _channel.invokeMethod('set_string', [file, id, value]);
   }
 
@@ -29,7 +29,7 @@ class AsyncPreferences {
   /// against (Android only).
   ///
   /// The return value will be null if the given [id] was never used.
-  Future<String?> getString(String id, {String? file}) async {
+  Future<String?> getString(String id, {String? file}) {
     return _channel.invokeMethod('get_string', [file, id]);
   }
 
@@ -39,7 +39,7 @@ class AsyncPreferences {
   /// against (Android only).
   ///
   /// Returns true if the value was successfully saved, returns false otherwise.
-  Future<bool?> setBool(String id, {required bool value, String? file}) async {
+  Future<bool?> setBool(String id, {required bool value, String? file}) {
     return _channel.invokeMethod('set_bool', [file, id, value]);
   }
 
@@ -49,7 +49,7 @@ class AsyncPreferences {
   /// against (Android only).
   ///
   /// The return value will be null if the given [id] was never used.
-  Future<bool?> getBool(String id, {String? file}) async {
+  Future<bool?> getBool(String id, {String? file}) {
     return _channel.invokeMethod('get_bool', [file, id]);
   }
 
@@ -59,7 +59,7 @@ class AsyncPreferences {
   /// against (Android only).
   ///
   /// Returns true if the value was successfully saved, returns false otherwise.
-  Future<bool?> setInt(String id, int value, {String? file}) async {
+  Future<bool?> setInt(String id, int value, {String? file}) {
     return _channel.invokeMethod('set_int', [file, id, value]);
   }
 
@@ -69,7 +69,7 @@ class AsyncPreferences {
   /// against (Android only).
   ///
   /// The return value will be null if the given [id] was never used.
-  Future<int?> getInt(String id, {String? file}) async {
+  Future<int?> getInt(String id, {String? file}) {
     return _channel.invokeMethod('get_int', [file, id]);
   }
 
@@ -81,7 +81,7 @@ class AsyncPreferences {
   /// against (Android only).
   ///
   /// Returns true if the value was successfully saved, returns false otherwise.
-  Future<bool?> setLong(String id, int value, {String? file}) async {
+  Future<bool?> setLong(String id, int value, {String? file}) {
     return _channel.invokeMethod('set_long', [file, id, value.toString()]);
   }
 
@@ -93,7 +93,7 @@ class AsyncPreferences {
   /// against (Android only).
   ///
   /// The return value will be null if the given [id] was never used.
-  Future<int?> getLong(String id, {String? file}) async {
+  Future<int?> getLong(String id, {String? file}) {
     return _channel.invokeMethod('get_long', [file, id]);
   }
 }

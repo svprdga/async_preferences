@@ -1,5 +1,15 @@
 # Change log
 
+## [1.1.0] - 2025-09-11
+
+### Changed
+
+- Updated Android build toolchain
+
+### Fixed
+
+- Moved calls containing the Preferences API to background operations to prevent potential UI freezes (ANRs)
+
 ## [1.0.2] - 2025-02-19
 
 ### Fixed

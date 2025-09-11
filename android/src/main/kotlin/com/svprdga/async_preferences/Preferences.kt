@@ -4,14 +4,14 @@ import android.content.SharedPreferences
 
 class Preferences(private val sharedPreferences: SharedPreferences) {
 
-    private val editor: SharedPreferences.Editor = sharedPreferences.edit()
-
     fun remove(id: String): Boolean {
+        val editor = sharedPreferences.edit()
         editor.remove(id)
         return editor.commit()
     }
 
     fun setString(id: String, value: String): Boolean {
+        val editor = sharedPreferences.edit()
         editor.putString(id, value)
         return editor.commit()
     }
@@ -21,6 +21,7 @@ class Preferences(private val sharedPreferences: SharedPreferences) {
     }
 
     fun setBoolean(id: String, value: Boolean): Boolean {
+        val editor = sharedPreferences.edit()
         editor.putBoolean(id, value)
         return editor.commit()
     }
@@ -34,6 +35,7 @@ class Preferences(private val sharedPreferences: SharedPreferences) {
     }
 
     fun setInt(id: String, value: Int): Boolean {
+        val editor = sharedPreferences.edit()
         editor.putInt(id, value)
         return editor.commit()
     }
@@ -47,6 +49,7 @@ class Preferences(private val sharedPreferences: SharedPreferences) {
     }
 
     fun setLong(id: String, value: Long): Boolean {
+        val editor = sharedPreferences.edit()
         editor.putLong(id, value)
         return editor.commit()
     }
