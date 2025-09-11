@@ -1,5 +1,11 @@
 # Change log
 
+## [1.0.3] - 2025-09-11
+
+### Fixed
+
+- Move calls containing the Preferences API to a background operation
+
 ## [1.0.2] - 2025-02-19
 
 ### Fixed
