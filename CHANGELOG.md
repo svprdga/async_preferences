@@ -4,7 +4,7 @@
 
 ### Changed
 
-- Updated Android build toolchain (Kotlin 2.1.0, AGP 8.1.1, Gradle 8.14.3, compileSdk 35, JVM target 11)
+- Updated Android build toolchain
 
 ### Fixed
 
