@@ -1,7 +1,7 @@
 import Flutter
 import UIKit
 
-public class SwiftAsyncPreferencesPlugin: NSObject, FlutterPlugin {
+public class AsyncPreferencesPlugin: NSObject, FlutterPlugin {
     
     // Vars
     
@@ -11,7 +11,7 @@ public class SwiftAsyncPreferencesPlugin: NSObject, FlutterPlugin {
     
     public static func register(with registrar: FlutterPluginRegistrar) {
         let channel = FlutterMethodChannel(name: "async_preferences", binaryMessenger: registrar.messenger())
-        let instance = SwiftAsyncPreferencesPlugin()
+        let instance = AsyncPreferencesPlugin()
         registrar.addMethodCallDelegate(instance, channel: channel)
     }
     

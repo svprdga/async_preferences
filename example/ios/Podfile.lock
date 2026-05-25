@@ -1,20 +1,14 @@
 PODS:
-  - async_preferences (0.0.1):
-    - Flutter
   - Flutter (1.0.0)
 
 DEPENDENCIES:
-  - async_preferences (from `.symlinks/plugins/async_preferences/ios`)
   - Flutter (from `Flutter`)
 
 EXTERNAL SOURCES:
-  async_preferences:
-    :path: ".symlinks/plugins/async_preferences/ios"
   Flutter:
     :path: Flutter
 
 SPEC CHECKSUMS:
-  async_preferences: 3295a84749baec35e004440eaddd4458fdc61b94
   Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
 
 PODFILE CHECKSUM: 6d0d8bd6825abb7362e631e8ca7df902e38da3df
