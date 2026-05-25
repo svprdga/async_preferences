@@ -13,6 +13,11 @@ This plugin stands out for some significant differences compared to other prefer
 
 For now this plugin only supports Android and iOS, it is not planned to support more platforms.
 
+## Requirements
+
+- Flutter 3.44 or higher.
+- Dart 3.12 or higher.
+
 ## How to use it
 
 First, import the plugin:
